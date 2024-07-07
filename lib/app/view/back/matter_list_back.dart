@@ -25,7 +25,7 @@ abstract class _MatterListBack with Store {
   }
 
   goToAdd(BuildContext context, [Matter? matter]) {
-    Navigator.of(context).pushNamed(MyApp.ADD_MATTERS, arguments: matter).then(refreshList);
+    Navigator.of(context).pushNamed(MyApp.MATTERS, arguments: matter).then((_) => refreshList());
   }
 
 

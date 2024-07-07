@@ -13,10 +13,10 @@ class Connection {
         path,
         version: 1,
         onCreate: (_db, version) async {
-          await _db.execute(create_table);
-          await _db.execute(insert1);
-          await _db.execute(insert2);
-          await _db.execute(insert3);
+          await _db.execute(create_table_materias);
+          //await _db.execute(insert1);
+          //await _db.execute(insert2);
+          //await _db.execute(insert3);
           
         }
       );

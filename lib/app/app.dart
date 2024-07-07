@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gestao_horas_certificado/app/view/front/certificate_list_front.dart';
 import 'package:gestao_horas_certificado/app/view/front/matter_list_front.dart';
 import 'package:gestao_horas_certificado/app/view/front/matter_add_front.dart';
 
 class MyApp extends StatelessWidget {
   static const HOME = '/';
-  static const ADD_MATTERS = 'add-matter';
+  static const MATTERS = 'add-matter';
+  static const CERTIFICATES = 'add-certificate';
 
   // This widget is the root of your application.
   @override
@@ -18,7 +20,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         HOME: (context) => MatterList(),
-        ADD_MATTERS: (context) => AddMatter(),
+        MATTERS: (context) => AddMatter(),
+        CERTIFICATES: (context) => AddCertificate(),
       },
     );
   }

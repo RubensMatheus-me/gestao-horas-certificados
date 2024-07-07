@@ -9,10 +9,15 @@ class MatterAddBack {
   var _service = GetIt.I.get<MatterService>();
 
   bool _matterIsValid = false;
-  bool _averageIsValid = false;
+  //bool _averageIsValid = false;
+  bool _teacherIsValid = false;
+  bool _valuesIsValid = false;
 
-  bool get isValid => _matterIsValid && _averageIsValid;
+  String? _firstValue;
+  String? _secondValue;
+  String? _thirdValue;
 
+  bool get isValid => _matterIsValid && _teacherIsValid && _valuesIsValid;
 
   MatterAddBack(BuildContext context) {
     var parameter = ModalRoute.of(context)?.settings.arguments;
@@ -41,9 +46,11 @@ class MatterAddBack {
       return e.toString();
     }
   }
-  String? validateAverage(double? average) {
+  /*
+  String? validateAverage(String? average) {
     try{
-      _service.validateAverage(average);
+      double? avg = double.tryParse(average ?? '');
+      _service.validateAverage(avg);
       _averageIsValid = true;
       return null;
     }catch(e) {
@@ -51,4 +58,47 @@ class MatterAddBack {
       return e.toString();
     }
   }
+  */
+  String? validateTeacher(String? teacher) {
+    try {
+      _service.validateTeacher(teacher);
+      _teacherIsValid = true;
+      return null;
+    }catch(e) {
+      _teacherIsValid = false;
+      return e.toString();
+    }
+  }
+
+  String? validateFirstValue(String? value) {
+    _firstValue = value;
+    return validateAllValues();
+  }
+
+  String? validateSecondValue(String? value) {
+    _secondValue = value;
+    return validateAllValues();
+  }
+
+  String? validateThirdValue(String? value) {
+    _thirdValue = value;
+    return validateAllValues();
+
+  }
+
+  String? validateAllValues() {
+    double? first = double.tryParse(_firstValue ?? ''); 
+    double? second = double.tryParse(_secondValue ?? '');
+    double? third = double.tryParse(_thirdValue ?? '');
+
+    try {
+      _service.validateValues(first, second, third);
+      _valuesIsValid = true;
+      return null;
+    }catch(e) {
+      _valuesIsValid = false;
+      return e.toString();
+    }
+  }
+
 }
