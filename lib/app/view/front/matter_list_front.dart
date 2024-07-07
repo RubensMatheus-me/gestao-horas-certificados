@@ -55,11 +55,21 @@ class MatterList extends StatelessWidget {
         backgroundColor: Colors.blue,
         actions: [
           IconButton(
+            icon: Icon(Icons.check_circle),
+            onPressed: () {
+              //
+            },
+
+          ),
+          IconButton(
             icon: Icon(Icons.paste_outlined),
             onPressed: () {
-
+              _back.goToCertificate(context);
             },
+
           ),
+          
+          
         ],
       ),
       body: Observer(builder: (context) {
@@ -88,7 +98,7 @@ class MatterList extends StatelessWidget {
                       child: Row( 
                         children: [
                           iconEditButton(() {
-                            _back.goToAdd(context, matter);
+                            _back.goToAddMatter(context, matter);
                           }),
                           iconRemoveButton(context, () {
                             _back.remove(matter.id);
@@ -108,7 +118,7 @@ class MatterList extends StatelessWidget {
     ),
     floatingActionButton: FloatingActionButton(  
       onPressed: () {
-        _back.goToAdd(context);
+        _back.goToAddMatter(context);
       },
       child: Icon(Icons.add),
       backgroundColor: Colors.blue,

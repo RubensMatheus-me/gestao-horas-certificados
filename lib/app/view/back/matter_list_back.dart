@@ -24,10 +24,13 @@ abstract class _MatterListBack with Store {
     refreshList();
   }
 
-  goToAdd(BuildContext context, [Matter? matter]) {
-    Navigator.of(context).pushNamed(MyApp.MATTERS, arguments: matter).then((_) => refreshList());
+  goToAddMatter(BuildContext context, [Matter? matter]) {
+    Navigator.of(context).pushNamed(MyApp.ADD_MATTERS, arguments: matter).then((_) => refreshList());
   }
 
+  goToCertificate(BuildContext context, [Matter? matter]) {
+    Navigator.of(context).pushNamed(MyApp.CERTIFICATES, arguments: matter).then((_) => refreshList());
+  }
 
   remove(dynamic id) {
     _service.remove(id);

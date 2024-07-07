@@ -1,8 +1,9 @@
 class Certificate {
+  dynamic id;
   String? name;
   String? description;
   int? hours;
   String? type;
 
-  Certificate({this.name, this.description, this.hours, this.type});
+  Certificate({this.id, this.name, this.description, this.hours, this.type});
 }

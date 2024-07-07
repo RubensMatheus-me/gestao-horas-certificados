@@ -11,18 +11,13 @@ final create_table_materias = '''
   )
 ''';
 
-final create_table_certificados1 = '''
-  CREATE TABLE matter(
+final create_table_certificados = '''
+  CREATE TABLE certificate(
     id INTEGER NOT NULL PRIMARY KEY,
-    ensino_certificado_nome VARCHAR(100) NOT NULL, 
-    extensao_certificado_nome VARCHAR(100) NOT NULL,
-    social_certificado_nome VARCHAR(100) NOT NULL,
-    ensino_certificado_descricao VARCHAR(300),
-    extensao_certificado_descricao VARCHAR(300),
-    social_certificado_descricao VARCHAR(300),
-    ensino_certificado_horas INTEGER NOT NULL,
-    extensao_certificado_horas INTEGER NOT NULL,
-    social_certificado_horas INTEGER NOT NULL,
+    nome_certificado VARCHAR(50) NOT NULL,
+    descricao_certificado VARCHAR(200),
+    horas_certificado INTEGER NOT NULL,
+    tipo_certificado VARCHAR(10) NOT NULL
   )
 ''';
 
@@ -33,4 +28,8 @@ VALUES('Matematica', 'Hélio Kamakawa', 84.5, 67.4, 93.4);
 
 ''';
 
+final insert_certificado = '''
+INSERT INTO certificate (nome_certificado, descricao_certificado, horas_certificado, tipo_certificado) 
+VALUES('Curso SQL', 'Curso realizado no periodo da pandemia', 20, 'Extensao');
+''';
 
