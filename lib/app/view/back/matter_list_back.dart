@@ -32,6 +32,10 @@ abstract class _MatterListBack with Store {
     Navigator.of(context).pushNamed(MyApp.CERTIFICATES, arguments: matter).then((_) => refreshList());
   }
 
+  goToComplementaryHours(BuildContext context, [Matter? matter]) {
+    Navigator.of(context).pushNamed(MyApp.COMPLEMENTARY_HOURS, arguments: matter).then((_) => refreshList());
+  }
+
   remove(dynamic id) {
     _service.remove(id);
     refreshList();

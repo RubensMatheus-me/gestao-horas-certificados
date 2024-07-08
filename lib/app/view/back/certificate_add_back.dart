@@ -15,11 +15,11 @@ class CertificateAddBack {
   bool certificateTypeIsValid = false;
 
   bool get isValid => certificateNameIsValid && certificateDescriptionIsValid && certificateHoursIsValid && certificateTypeIsValid;
-
+  
 
   CertificateAddBack(BuildContext context) {
     var parameter = ModalRoute.of(context)?.settings.arguments;
-
+    
     if(parameter == null) {
       certificate = Certificate();
     }else if(parameter is Certificate) {
@@ -78,4 +78,5 @@ class CertificateAddBack {
       return e.toString();
     }
   }
+  
 }

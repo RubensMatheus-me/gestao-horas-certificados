@@ -46,4 +46,35 @@ class CertificateDaoImp implements CertificateDAO {
     }
   }
   
+  @override
+  Future<int>getTotalHours(String type) async {
+    _db = await Connection.get();
+    var sql = 'SELECT SUM(horas_certificado) AS total FROM certificate WHERE tipo_certificado = ?';
+    var result = await _db!.rawQuery(sql, [type]);
+
+  if (result.isNotEmpty) {
+    int totalHours = result.first['total'] != null ? result.first['total'] as int : 0;
+    return totalHours;
+  } else {
+    return 0;
+  }
+  }
+
+    @override
+  Future<List<int>>getAllHours() async {
+    _db = await Connection.get();
+    var sql = 'SELECT SUM(horas_certificado) AS total FROM certificate';
+    var result = await _db!.rawQuery(sql);
+
+    if (result.isNotEmpty) {
+      List<int> totalHours = result.map((row) {
+        int? total = row['total'] as int?;
+        return total ?? 0;
+      }).toList();
+      return totalHours;
+    } else {
+      return [];
+    } 
+  }
+  
 }

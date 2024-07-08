@@ -21,6 +21,16 @@ final create_table_certificados = '''
   )
 ''';
 
+final create_table_horas_complementares = '''
+  CREATE TABLE complementary_hours(
+    id INTEGER NOT NULL PRIMARY KEY,
+    tipo_certificado VARCHAR(10) NOT NULL,
+    horas_certificado INTEGER NOT NULL
+  )
+''';
+
+
+
 
 final insert1 = '''
 INSERT INTO matter (nome, professor, primeiro_trimestre, segundo_trimestre, terceiro_trimestre)
@@ -33,3 +43,7 @@ INSERT INTO certificate (nome_certificado, descricao_certificado, horas_certific
 VALUES('Curso SQL', 'Curso realizado no periodo da pandemia', 20, 'Extensao');
 ''';
 
+final insert_horas_complementares = '''
+  INSERT INTO certificate (extensao_horas, social_horas, ensino_horas) 
+VALUES('10','10','20');
+''';

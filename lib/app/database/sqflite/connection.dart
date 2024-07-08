@@ -15,7 +15,8 @@ class Connection {
         onCreate: (_db, version) async {
           await _db.execute(create_table_materias);
           await _db.execute(create_table_certificados);
-          //await _db.execute(insert_certificado);
+          await _db.execute(create_table_horas_complementares);
+          //await _db.execute(insert_horas_complementares);
           //await _db.execute(insert1);
           //await _db.execute(insert2);
           //await _db.execute(insert3);

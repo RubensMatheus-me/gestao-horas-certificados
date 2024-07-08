@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:gestao_horas_certificado/app/app.dart';
 import 'package:gestao_horas_certificado/app/domain/entities/certificate.dart';
@@ -5,22 +6,26 @@ import 'package:gestao_horas_certificado/app/domain/services/certificate_service
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
-part 'certificate_list_back.g.dart';
+part 'complementary_hours_list_back.g.dart';
 
-class CertificateListBack = _CertificateListBack with _$CertificateListBack;
+class ComplementaryHoursListBack = _ComplementaryHoursListBack with _$ComplementaryHoursListBack;
 
-abstract class _CertificateListBack with Store {
+abstract class _ComplementaryHoursListBack with Store {
   var _service = GetIt.I.get<CertificateService>();
 
   @observable
-  Future<List<Certificate>> ?list;
+  Future<List<int>> ?list;
 
   @action
   refreshList([dynamic value]) {
-    list = _service.find();
+    list = _service.getAllHours();
   }
-  
-  _CertificateListBack() {
+
+  Future<int>getTotalHour(String type) {
+    return _service.getTotalHour(type);
+  }
+
+  _ComplementaryHoursListBack() {
     refreshList();
   }
 

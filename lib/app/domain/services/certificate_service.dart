@@ -15,6 +15,15 @@ class CertificateService {
     _dao.save(certificate);
   }
 
+  Future<int>getTotalHour(String? type) {
+    return _dao.getTotalHours(type!);
+  }
+
+  Future<List<int>>getAllHours(){
+    return _dao.getAllHours();
+    }
+  
+
   remove(dynamic id) {
     _dao.remove(id);
   }

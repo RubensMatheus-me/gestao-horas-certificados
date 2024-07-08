@@ -5,5 +5,10 @@ abstract class CertificateDAO {
 
   Future<List<Certificate>> find();
 
+  Future<List<int>> getAllHours();
+
   remove(dynamic id);
+
+  Future<int>getTotalHours(String type);
+  
 }
