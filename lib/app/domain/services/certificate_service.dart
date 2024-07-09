@@ -73,7 +73,7 @@ class CertificateService {
     throw DomainLayerException('O valor precisa ser um número inteiro.');
   }
     
-    if(trueHours! <= 0) {
+    if(trueHours <= 0) {
       throw DomainLayerException('O certificado precisa ter no minimo 1 hora');
 
     }
