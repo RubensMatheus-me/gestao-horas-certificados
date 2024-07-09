@@ -10,5 +10,7 @@ abstract class CertificateDAO {
   remove(dynamic id);
 
   Future<int>getTotalHours(String type);
+
+  Future<Map<String, int>>getAllHoursByActivityType();
   
 }

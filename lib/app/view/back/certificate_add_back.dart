@@ -16,7 +16,6 @@ class CertificateAddBack {
 
   bool get isValid => certificateNameIsValid && certificateDescriptionIsValid && certificateHoursIsValid && certificateTypeIsValid;
   
-
   CertificateAddBack(BuildContext context) {
     var parameter = ModalRoute.of(context)?.settings.arguments;
     
@@ -30,6 +29,7 @@ class CertificateAddBack {
   }
   
   save() async {
+    await _service.validateMaxHours(certificate);
     await _service.save(certificate);
   }
   

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestao_horas_certificado/app/domain/exception/domain_layer_exception.dart';
 import 'package:gestao_horas_certificado/app/view/back/certificate_add_back.dart';
 
 class AddCertificate extends StatelessWidget {
@@ -9,32 +10,28 @@ class AddCertificate extends StatelessWidget {
       validator: back.validateCertificateName,
       onSaved: (newValue) => back.certificate.name = newValue,
       initialValue: back.certificate.name,
-      decoration: InputDecoration(
-        labelText: 'Nome do Certificado'
-      ),
+      decoration: InputDecoration(labelText: 'Nome do Certificado'),
     );
   }
+
   Widget fieldCertificateDescription(CertificateAddBack back) {
     return TextFormField(
       validator: back.validateCertificateDescription,
       onSaved: (newValue) => back.certificate.description = newValue,
       initialValue: back.certificate.description,
-      decoration: InputDecoration(
-        labelText: 'Descrição do Certificado'
-      ),
+      decoration: InputDecoration(labelText: 'Descrição do Certificado'),
     );
   }
+
   Widget fieldCertificateHours(CertificateAddBack back) {
     return TextFormField(
       validator: back.validateCertificateHours,
       onSaved: (newValue) {
         int? value = int.tryParse(newValue ?? '');
         back.certificate.hours = value;
-     },
+      },
       initialValue: back.certificate.hours?.toString() ?? '',
-      decoration: InputDecoration(
-        labelText: 'Horas do Certificado'
-      ),
+      decoration: InputDecoration(labelText: 'Horas do Certificado'),
       keyboardType: TextInputType.number,
     );
   }
@@ -44,11 +41,9 @@ class AddCertificate extends StatelessWidget {
       validator: back.validateCertificateType,
       onSaved: (newValue) => back.certificate.type = newValue,
       value: back.certificate.type,
-      decoration: InputDecoration(
-        labelText: 'Tipo de Certificado',
-      ),
+      decoration: InputDecoration(labelText: 'Tipo de Certificado'),
       items: ['Ensino', 'Extensão', 'Social'].map((String value) {
-        return DropdownMenuItem<String> (
+        return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
         );
@@ -58,7 +53,6 @@ class AddCertificate extends StatelessWidget {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -70,21 +64,33 @@ class AddCertificate extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.save),
-            onPressed: () {
+            onPressed: () async {
               if (_add.currentState?.validate() ?? false) {
                 _add.currentState?.save();
-                _back.save();
-                Navigator.of(context).pop();
+                try {
+                  await _back.save();
+                  Navigator.of(context).pop();
+                } catch (e) {
+                  if (e is DomainLayerException) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.cause)),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Erro desconhecido')),
+                    );
+                  }
+                }
               }
             },
-            )
+          )
         ],
       ),
-      body: Padding( 
+      body: Padding(
         padding: EdgeInsets.all(10.0),
-        child: Form(  
+        child: Form(
           key: _add,
-          child: ListView(  
+          child: ListView(
             children: [
               fieldCertificateName(_back),
               SizedBox(height: 10),
@@ -96,7 +102,6 @@ class AddCertificate extends StatelessWidget {
             ],
           ),
         ),
-        
       ),
     );
   }

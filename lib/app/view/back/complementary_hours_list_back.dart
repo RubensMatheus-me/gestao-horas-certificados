@@ -16,6 +16,9 @@ abstract class _ComplementaryHoursListBack with Store {
   @observable
   Future<List<int>> ?list;
 
+  @observable
+  Future<Map<String, int>>? hoursByActivityType;
+
   @action
   refreshList([dynamic value]) {
     list = _service.getAllHours();
@@ -23,6 +26,10 @@ abstract class _ComplementaryHoursListBack with Store {
 
   Future<int>getTotalHour(String type) {
     return _service.getTotalHour(type);
+  }
+
+  Future<Map<String, int>> getAllHoursByActivityType() {
+    return _service.getAllHoursByActivityType();
   }
 
   _ComplementaryHoursListBack() {

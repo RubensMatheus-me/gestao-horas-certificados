@@ -5,14 +5,20 @@ import 'package:get_it/get_it.dart';
 
 class CertificateService {
   final _dao = GetIt.I.get<CertificateDAO>();
+
+  static const int maxHoursEnsino = 40;
+  static const int maxHoursExtensao = 155;
+  static const int maxHoursSocial = 40;
   
-  save(Certificate certificate) {
+  save(Certificate certificate) async {
     validateCertificateDescription(certificate.description);
     validateCertificateName(certificate.name);
     validateHoursCertificate(certificate.hours?.toString());
     validateTypeCertificate(certificate.type);
 
-    _dao.save(certificate);
+    await validateMaxHours(certificate);
+
+    await _dao.save(certificate);
   }
 
   Future<int>getTotalHour(String? type) {
@@ -22,6 +28,10 @@ class CertificateService {
   Future<List<int>>getAllHours(){
     return _dao.getAllHours();
     }
+
+  Future<Map<String, int>>getAllHoursByActivityType() {
+    return _dao.getAllHoursByActivityType();
+  }
   
 
   remove(dynamic id) {
@@ -54,11 +64,14 @@ class CertificateService {
   }
   
   validateHoursCertificate(String? hours) {
-
+    
     if(hours == null || hours.isEmpty) {
       throw DomainLayerException('A quantidade de horas é obrigatoria.');
     }
     final int? trueHours = int.tryParse(hours);
+    if (trueHours == null) {
+    throw DomainLayerException('O valor precisa ser um número inteiro.');
+  }
     
     if(trueHours! <= 0) {
       throw DomainLayerException('O certificado precisa ter no minimo 1 hora');
@@ -69,6 +82,29 @@ class CertificateService {
   validateTypeCertificate(String? type) {
     if(type == null) {
        throw DomainLayerException('Voce deve escolher o tipo de certificado');
+    }
+  }
+
+   Future<void> validateMaxHours(Certificate certificate) async {
+    int currentHours = await getTotalHour(certificate.type!);
+    int maxHours;
+
+    switch (certificate.type) {
+      case 'Ensino':
+        maxHours = maxHoursEnsino;
+        break;
+      case 'Extensão':
+        maxHours = maxHoursExtensao;
+        break;
+      case 'Social':
+        maxHours = maxHoursSocial;
+        break;
+      default:
+        throw DomainLayerException('Tipo de certificado desconhecido.');
+    }
+
+    if ((currentHours + (certificate.hours ?? 0)) > maxHours) {
+      throw DomainLayerException('Não é possível adicionar mais horas para o tipo ${certificate.type}. Limite máximo de $maxHours horas atingido.');
     }
   }
 } 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:gestao_horas_certificado/app/view/back/complementary_hours_list_back.dart';
 
 class ComplementaryHoursList extends StatefulWidget {
@@ -9,23 +8,22 @@ class ComplementaryHoursList extends StatefulWidget {
 
 class _ComplementaryHoursListState extends State<ComplementaryHoursList> {
   final _back = ComplementaryHoursListBack();
-  final ValueNotifier<int?> totalHoursEnsinoNotifier = ValueNotifier<int?>(null);
+  final ValueNotifier<Map<String, int>> totalHoursNotifier = ValueNotifier<Map<String, int>>({});
 
   @override
   void initState() {
     super.initState();
-    _fetchTotalHoursEnsino();
+    _fetchTotalHours();
   }
 
-  Future<void> _fetchTotalHoursEnsino() async {
-    // Calcula o total de horas para certificados do tipo 'Ensino'
-    int? totalHours = await _back.getTotalHour('Ensino');
-    totalHoursEnsinoNotifier.value = totalHours;
+  Future<void> _fetchTotalHours() async {
+    Map<String, int> totalHours = await _back.getAllHoursByActivityType();
+    totalHoursNotifier.value = totalHours;
   }
 
   @override
   void dispose() {
-    totalHoursEnsinoNotifier.dispose();
+    totalHoursNotifier.dispose();
     super.dispose();
   }
 
@@ -33,46 +31,45 @@ class _ComplementaryHoursListState extends State<ComplementaryHoursList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Grade de Certificados'),
-        backgroundColor: Colors.blueAccent,
+        title: Text('Grade de Horas Complementares'),
+        backgroundColor: Colors.lightBlue,
       ),
-      body: Observer(builder: (context) {
-        return FutureBuilder<List<int>>(
-          future: _back.list,
-          builder: (context, AsyncSnapshot<List<int>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Erro: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('Nenhum certificado encontrado.'));
-            } else {
-              List<int> list = snapshot.data!;
-
-              return ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (context, i) {
-                  var certificate = list[i];
-                  Widget trailingWidget;
-                  trailingWidget = ValueListenableBuilder<int?>(
-                      valueListenable: totalHoursEnsinoNotifier,
-                      builder: (context, totalHoursEnsino, child) {
-                        return totalHoursEnsino != null
-                            ? Text('Ensino: $totalHoursEnsino horas')
-                            : CircularProgressIndicator();
-                      },
-                    );
-                                      return ListTile(
-                    title: Text('Teste'),
-                    subtitle: Text('taadaasdasd'),
-                    trailing: trailingWidget,
-                  );
-                },
-              );
-            }
-          },
-        );
-      }),
+      body: ValueListenableBuilder<Map<String, int>>(
+        valueListenable: totalHoursNotifier,
+        builder: (context, totalHours, child) {
+            return ListView(
+              children: [
+                ListTile(
+                  title: Text(
+                    'Ensino',
+                    style: TextStyle(fontSize: 14),
+                    ),
+                    trailing: Text('${totalHours['Ensino'] ?? 0} horas',
+                    style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ListTile(
+                  title: Text(
+                    'Extensão',
+                    style: TextStyle(fontSize: 14),
+                    ),
+                    trailing: Text('${totalHours['Extensão'] ?? 0} horas',
+                    style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ListTile(
+                  title: Text(
+                    'Social',
+                    style : TextStyle(fontSize: 14),
+                    ),
+                    trailing: Text('${totalHours['Social'] ?? 0} horas',
+                    style : TextStyle(fontSize: 14),
+                  )
+                ),
+              ],
+            );
+          }
+      ),
     );
   }
 }
